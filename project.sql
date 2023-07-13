@@ -1,0 +1,29 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    username TEXT NOT NULL,
+    hash TEXT NOT NULL
+);
+
+CREATE TABLE rooms (
+    id VARCHAR(6) PRIMARY KEY NOT NULL UNIQUE,
+    owner_id INTEGER NOT NULL UNIQUE,
+    hash TEXT NOT NULL,
+    FOREIGN KEY (owner_id) REFERENCES users(id)
+);
+
+CREATE TABLE active (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    room_id VARCHAR(6) NOT NULL,
+    user_id INTEGER NOT NULL,
+    priority INTEGER NOT NULL,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)
+
+CREATE TABLE banned (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    room_id VARCHAR(6) NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)

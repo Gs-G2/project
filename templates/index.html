@@ -1,0 +1,226 @@
+{% extends "layout.html" %} {% block title %} HomePage {% endblock %} {% block
+main %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md bg-danger p-0">
+      <img class="img-fluid w-100 p-5" src="../static/images/logo1.svg" alt="logo" />
+    </div>
+    <div class="col-md py-5 p-0">
+      <div class="px-5 mb-5">
+        <h1 class="fw-bold text-dark">about</h1>
+        <p class="px-md-5">
+          Dices is a web application where you can join virtual rooms, chat with
+          your friends and roll the dice for any game.
+        </p>
+        <p class="text-muted">
+          Built using Flask, Python, JavaScript, WebSockets and SQLite.
+        </p>
+      </div>
+      <div class="d-flex" id="actual-room">
+        {% if actual_room %}
+        <div
+          class="rounded border border-success bg-success-subtle mx-auto py-1 mb-5"
+        >
+          <div class="d-flex align-items-center">
+            <a role="button" class="btn btn-success my-1 ms-2" id="room-button">
+              <i class="bi bi-play-fill"></i>
+            </a>
+            <div class="fw-bold text-start mx-3">
+              Actual room <br />
+              <span class="text-muted fw-normal" id="room-id"
+                >{{ actual_room[0]["room_id"] }}</span
+              >
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="mb-5">
+        {% if session.get("user_id") %}
+        <a
+          type="button"
+          class="btn btn-primary mx-2"
+          data-bs-toggle="modal"
+          data-bs-target="#createRoom"
+        >
+          <i class="bi bi-plus me-2"></i>
+          Create Room
+        </a>
+        <button
+          class="btn btn-danger mx-2"
+          data-bs-toggle="modal"
+          data-bs-target="#enterRoom"
+        >
+          <i class="bi bi-door-closed-fill me-2" id="enter-icon"></i>
+          Enter Code
+        </button>
+        {% else %}
+        <a type="button" class="btn btn-secondary mx-2" href="/login">
+          <i class="bi bi-plus me-2"></i>
+          Create Room
+        </a>
+        <a type="button" class="btn btn-secondary mx-2" href="/login">
+          <i class="bi bi-door-closed-fill me-2" id="enter-icon"></i>
+          Enter Code
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="createRoom"
+        tabindex="-1"
+        aria-labelledby="createRoomLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">
+                Create Room
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body mb-3">
+              <form
+                class="needs-validation mx-5"
+                action="/room"
+                method="POST"
+                novalidate
+              >
+                <div class="mb-3">
+                  <input
+                    class="form-control has-validation"
+                    name="room_password"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Password"
+                    type="text"
+                    required
+                  />
+                  <div class="invalid-feedback text-start">
+                    Provide password
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <input
+                    class="form-control has-validation"
+                    name="confirmation"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Confirmation"
+                    type="text"
+                    required
+                  />
+                  <div class="invalid-feedback text-start">
+                    Provide confirmation
+                  </div>
+                </div>
+              {% if actual_room %}
+                <button class="btn btn-primary mx-auto disabled" type="submit">
+                  Create Now
+                </button>
+              </form>
+              <div class="my-2">
+                <small class="text-danger fw-medium"
+                  >You need to leave your current room</small
+                >
+              </div>
+              {% else %}
+              <button class="btn btn-primary mx-auto" type="submit">
+                  Create Now
+                </button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="enterRoom"
+        tabindex="-1"
+        aria-labelledby="enterRoomLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">
+                Enter the Room
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body mb-3">
+              <form
+                class="needs-validation mx-5"
+                action="/enter"
+                method="POST"
+                novalidate
+              >
+                <div class="mb-3">
+                  <input
+                    class="form-control has-validation"
+                    name="room_code"
+                    placeholder="Enter your code | Ex: a1bc2d"
+                    autocomplete="off"
+                    spellcheck="false"
+                    type="text"
+                    required
+                  />
+                  <div class="invalid-feedback text-start">
+                    Provide room code
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <input
+                    class="form-control has-validation"
+                    name="password"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Room password"
+                    type="text"
+                    required
+                  />
+                  <div class="invalid-feedback text-start">
+                    Provide password
+                  </div>
+                </div>
+                {% if actual_room %}
+                <button class="btn btn-primary mx-auto disabled" type="submit">
+                  Enter Now
+                </button>
+              </form>
+              <div class="my-2">
+                <small class="text-danger fw-medium"
+                  >You need to leave your current room</small
+                >
+              </div>
+              {% else %}
+              <button class="btn btn-primary mx-auto" type="submit">
+                  Enter Now
+                </button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../static/scripts/index_script.js"></script>
+    {% endblock %}
+  </div>
+</div>

@@ -1,0 +1,111 @@
+{% extends "layout.html" %} {% block title %} Room - {{ code }} {% endblock %}
+{% block main %}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+  integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+  crossorigin="anonymous"
+></script>
+<script src="../static/scripts/websocket_room.js"></script>
+<div class="row py-5">
+  <!--Users -->
+  <div class="col-lg-2 col-10 mx-auto mb-3">
+    <div class="px-xxl-5 p-3">
+      <span class="fw-bold fs-1">users</span>
+      <ul class="list-group overflow-visible" id="users"></ul>
+    </div>
+  </div>
+
+  <div class="col-lg-7 col-10 mx-auto mb-3">
+    <div
+      class="w-100 h-100 text-white d-flex justify-content-center align-items-center border bg-danger rounded position-relative z-0"
+      style="min-height: 400px"
+    >
+      <img
+        class="position-absolute start-0 h-100 w-auto z-n1 rounded-start"
+        id="room_background"
+        src="../static/images/room_background.png"
+        alt="background"
+      />
+      <div class="d-inline text-start">
+        <form id="dices-form">
+        <label class="form-label m-0 ms-1">Times</label>
+        <select
+          class="form-select w-auto text-bg-light mx-1 text-danger fw-bold"
+          aria-label="amount select"
+          id="amount-select"
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+      <div class="d-inline text-start">
+        <label class="form-label m-0 ms-1">Dice</label>
+        <select
+          class="form-select w-auto text-bg-light mx-1 text-danger fw-bold"
+          aria-label="dice select"
+          id="dice-select"
+        >
+          <option value="D6">D6</option>
+          <option value="D4">D4</option>
+          <option value="D8">D8</option>
+          <option value="D10">D10</option>
+          <option value="D12">D12</option>
+          <option value="D20">D20</option>
+          <option value="D100">D100</option>
+        </select>
+      </div>
+      <div class="d-inline text-start">
+        <span class="ms-1">Play</span>
+        <button class="btn btn-light mx-1 mt-auto d-block" id="dice-button" type="submit">
+          <i class="bi bi-play-fill text-danger me-2"></i>
+          <span class="fw-bold text-danger">Roll it</span>
+        </button>
+      </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-10 mx-auto mb-3 text-start">
+    <div class="px-xxl-3">
+      <span class="fw-bold fs-1">chat</span>
+      <form class="d-flex" id="chat-form">
+        <input
+          autocomplete="off"
+          autofocus
+          class="form-control me-2"
+          id="message"
+          name="message"
+          placeholder="Message"
+          type="text"
+        />
+        <button class="btn btn-danger disabled" type="submit" id="send-button">
+          Send
+        </button>
+      </form>
+      <div class="p-3 border rounded mt-3 position-relative" id="chat"></div>
+    </div>
+  </div>
+</div>
+<div class="my-3">
+  <a class="btn btn-danger fw-bold font-monospace mx-1" id="exit-button"
+    >Exit</a
+  >
+  <span
+    class="bg-body-secondary p-2 w-auto align-middle rounded px-3 mx-1"
+    id="share"
+  >
+  </span>
+  <button
+    class="btn btn-outline-secondary"
+    id="share-button"
+    data-bs-container="body"
+    data-bs-toggle="popover"
+    data-bs-trigger="focus"
+    data-bs-placement="top"
+    type="button"
+  >
+    <i class="bi bi-clipboard" id="share-icon"></i>
+  </button>
+</div>
+<script src="../static/scripts/room_scripts.js"></script>
+{% endblock %}

@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+
+* {
+  font-family: "Inter";
+  letter-spacing: -0.075em;
+}
+
+:root {
+  --dark: #2b2730;
+  --alert-background: rgba(174, 85, 85, 0.85);
+  --icon-background: rgba(255, 255, 255, 0.2);
+}
+
+.text-dark {
+  color: var(--dark);
+}
+
+#alerts {
+  transition: all 0.5s ease;
+  transform: translateX(-50%);
+  z-index: 1;
+  background-color: var(--alert-background);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.rotating {
+  animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-45deg);
+  }
+  60% {
+    transform: rotate(-45deg);
+  }
+  90% {
+    transform: rotate(360deg);
+  }
+  95% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#alert-icon {
+  background-color: var(--icon-background);
+  line-height: 1em;
+  letter-spacing: 0;
+}
+
+.remove-letter-padding {
+  line-height: 1em;
+  letter-spacing: 0;
+}
+
+.font-monospace {
+  font-family: "Consolas", monospace !important;
+}
+
+#chat {
+  min-height: 400px;
+  max-height: 400px;
+  line-break: auto;
+  width: auto;
+  overflow-y: scroll;
+}
+
+#users > li {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+}
+
+.popover {
+  font-weight: 500;
+}
+
+img {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.three-dots:hover > button {
+  cursor: pointer;
+  transition: all 0.5s ease;
+  background-color: var(--bs-dark);
+  color: var(--bs-white);
+}
